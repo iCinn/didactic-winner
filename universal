@@ -1,0 +1,318 @@
+-- Send Notification
+--game:GetService("StarterGui"):SetCore("SendNotification", {Title = "hi2",Text = "hi"})
+
+-- Options
+local openKey = "Insert";
+
+-- Necessity/TechnicallyImports
+local playergui = game:GetService('Players').LocalPlayer:WaitForChild('PlayerGui');
+local UserInputService = game:GetService("UserInputService");
+local openMenu = true;
+local menuRan = false;
+local minimizeMenu = false;
+-- UDIM NOTE:
+-- (OFFSET, W/X, OFFSET, H/Y) (ONLY CHANGE VALUE FOR MOVE)
+local myGUI = Instance.new("ScreenGui", playergui);
+myGUI.Name = "CinnGUI";
+
+-- Finished. Add discord later.
+function RunWelcome() 
+	local Players = game:GetService("Players")
+	local player = Players.LocalPlayer
+	local userId = player.UserId
+	local thumbType = Enum.ThumbnailType.HeadShot
+	local thumbSize = Enum.ThumbnailSize.Size420x420
+	local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+
+	local welcomeFrame = Instance.new("Frame", myGUI);
+	local UICorner2 = Instance.new("UICorner", welcomeFrame);
+	UICorner2.CornerRadius = UDim.new(0.05, 0);
+	welcomeFrame.Name = "WelcomeFrame";
+	welcomeFrame.Visible = true;
+	welcomeFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40);
+	welcomeFrame.Position = UDim2.new(0.5, -185 , 0, -300)
+	welcomeFrame:TweenPosition(UDim2.new(0.5, -185, 0, -105), nil, nil, 1.5)
+	welcomeFrame.Size = UDim2.new(0, 350, 0, 185);
+	local welcomeText1 = Instance.new("TextLabel", welcomeFrame);
+	welcomeText1.Name = "WelcomeText1";
+	welcomeText1.Text = "Welcome,";
+	welcomeText1.Position = UDim2.new(0, -130, 0, -110);
+	welcomeText1.TextColor3 = Color3.fromRGB(34, 199, 116);
+	welcomeText1.Size = UDim2.new(0, 400, 0, 400);
+	welcomeText1.BackgroundTransparency = 255;
+	welcomeText1.Font = "SourceSansSemibold";
+	welcomeText1.TextSize = 25;
+	local welcomeText2 = Instance.new("TextLabel", welcomeFrame);
+	welcomeText2.Name = "WelcomeText2";
+	welcomeText2.Text = game:GetService('Players').LocalPlayer.Name;
+	welcomeText2.Position = UDim2.new(0, 124, 0, 40);
+	welcomeText2.Size = UDim2.new(0, 100, 0, 100);
+	welcomeText2.BackgroundTransparency = 255;
+	welcomeText2.TextColor3 = Color3.fromRGB(236, 98, 95);
+	welcomeText2.Font = "SourceSansSemibold";
+	welcomeText2.TextSize = 30;
+	welcomeText2.TextXAlignment = "Left";
+	local WelcomeText3 = Instance.new("TextLabel", welcomeFrame);
+	WelcomeText3.Name = "WelcomeText3";
+	WelcomeText3.Text = "It is";
+	WelcomeText3.TextColor3 = Color3.fromRGB(34, 199, 116);
+	WelcomeText3.Position = UDim2.new(0, 40, 0, 70);
+	WelcomeText3.Size = UDim2.new(0, 100, 0, 100);
+	WelcomeText3.BackgroundTransparency = 255;
+	WelcomeText3.Font = "SourceSansSemibold";
+	WelcomeText3.TextSize = 30;
+	WelcomeText3.TextXAlignment = "Left";
+	local WelcomeText4 = Instance.new("TextLabel", welcomeFrame);
+	WelcomeText4.Name = "WelcomeText4";
+	WelcomeText4.Text = os.date("%A.");
+	WelcomeText4.Position = UDim2.new(0, 85, 0, 70);
+	WelcomeText4.Size = UDim2.new(0, 100, 0, 100);
+	WelcomeText4.BackgroundTransparency = 255;
+	WelcomeText4.Font = "SourceSansSemibold";
+	WelcomeText4.TextColor3 = Color3.fromRGB(236, 98, 95);
+	WelcomeText4.TextSize = 35;
+	WelcomeText4.TextXAlignment = "Left";
+	local imageBust = Instance.new("ImageLabel", welcomeFrame);
+	local UICorner69 = Instance.new("UICorner", imageBust);
+	UICorner69.CornerRadius = UDim.new(1, 0);
+	imageBust.Image = content;
+	imageBust.Size = UDim2.new(0, 62, 0, 62)
+	imageBust.Position = UDim2.new(0, 270, 0, 72)
+	local welcomeSplitter = Instance.new("Frame", welcomeFrame);
+	welcomeSplitter.Name = "WelcomeSplitter";
+	welcomeSplitter.Visible = true;
+	welcomeSplitter.BackgroundColor3 = Color3.fromRGB(147, 150, 148);
+	welcomeSplitter.Position = UDim2.new(0.5,-175 , 0, 140)
+	welcomeSplitter.Size = UDim2.new(0, 350, 0, 1);
+	welcomeSplitter.BorderSizePixel = 0;
+	local welcomeButton1 = Instance.new("TextButton", welcomeFrame);
+	local UICorner = Instance.new("UICorner", welcomeButton1);
+	UICorner.CornerRadius = UDim.new(0.2, 0);
+	welcomeButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
+	welcomeButton1.BackgroundColor3 = Color3.fromRGB(48, 48, 48);
+	welcomeButton1.Position = UDim2.new(0, 228, 0, 150);
+	welcomeButton1.Size = UDim2.new(0, 115, 0, 28);
+	welcomeButton1.Text = "Continue";
+	welcomeButton1.Font = "SourceSansSemibold";
+	welcomeButton1.TextSize = 23;
+	welcomeButton1.BorderSizePixel = 0;
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.WelcomeFrame.TextButton.MouseButton1Click:Connect(function() 
+		welcomeFrame:TweenPosition(UDim2.new(0.5, -185, 0, -300), nil, nil, 1)
+		if menuRan == false then
+		RunMenu();
+		menuRan = true;
+		end
+	end);
+	local welcomeButton2 = Instance.new("TextButton", welcomeFrame);
+	local UICorner2 = Instance.new("UICorner", welcomeButton2);
+	UICorner2.CornerRadius = UDim.new(0.2, 0);
+	welcomeButton2.Name = "TextButton2";
+	welcomeButton2.TextColor3 = Color3.fromRGB(236, 98, 95);
+	welcomeButton2.BackgroundColor3 = Color3.fromRGB(48, 48, 48);
+	welcomeButton2.Position = UDim2.new(0, 10, 0, 150);
+	welcomeButton2.Size = UDim2.new(0, 200, 0, 28);
+	welcomeButton2.Text = "Join the Discord!";
+	welcomeButton2.Font = "SourceSansSemibold";
+	welcomeButton2.TextSize = 22;
+	welcomeButton2.BorderSizePixel = 0;
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.WelcomeFrame.TextButton2.MouseButton1Click:Connect(function() 
+		setclipboard("Cute Cats");
+		welcomeButton2.Text = "Copied to Clipboard!";
+		welcomeButton2.TextSize = 18;
+		wait(2);
+		welcomeButton2.TextSize = 22;
+		welcomeButton2.Text = "Join the Discord!";
+	end);
+end
+
+function RunMenu() 
+	local grabFrame = Instance.new("Frame", myGUI);
+	local UICorner4 = Instance.new("UICorner", grabFrame);
+	UICorner4.CornerRadius = UDim.new(0.05, 0);
+	grabFrame.Name = "GrabFrame";
+	grabFrame.Visible = openMenu;
+	grabFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	grabFrame.Position = UDim2.new(0.5, -185 , 0, -300)
+	grabFrame:TweenPosition(UDim2.new(0.5, -225, 0, 150), nil, nil, 1.5)
+	grabFrame.Size = UDim2.new(0, 450, 0, 35);
+	grabFrame.ZIndex = 2;
+	grabFrame.Draggable = true
+	grabFrame.Active = true
+	grabFrame.Selectable = true
+	grabFrame.BorderSizePixel = 0;
+	local menuTitle = Instance.new("TextLabel", grabFrame);
+    menuTitle.Name = "MenuTitle";
+    menuTitle.Text = "CinnGUI";
+    menuTitle.TextColor3 = Color3.fromRGB(236, 98, 95);
+    menuTitle.Position = UDim2.new(0, -30, 0, -84);
+    menuTitle.Size = UDim2.new(0, 200, 0, 200);
+    menuTitle.BackgroundTransparency = 255;
+    menuTitle.Font = "SourceSansSemibold";
+    menuTitle.TextSize = 37;
+    menuTitle.ZIndex = 3;
+	local exitButton = Instance.new("TextButton", grabFrame);
+    local UICorner4 = Instance.new("UICorner", exitButton);
+    UICorner4.CornerRadius = UDim.new(0.15, 0);
+    exitButton.TextColor3 = Color3.fromRGB(236, 98, 95);
+    exitButton.Name = "ExitButton";
+    exitButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+    exitButton.Position = UDim2.new(0, 417, 0, 3);
+    exitButton.Size = UDim2.new(0, 28, 0, 28);
+    exitButton.Text = "X";
+    exitButton.TextSize = 35;
+    exitButton.Font = "SourceSansBold";
+    exitButton.ZIndex = 3;
+    exitButton.BorderSizePixel = 0;
+    game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.ExitButton.MouseButton1Click:Connect(function() 
+        openMenu = false;
+    end);
+	local menuFrame = Instance.new("Frame", grabFrame);
+    local UICorner3 = Instance.new("UICorner", menuFrame);
+    UICorner3.CornerRadius = UDim.new(0.02, 0);
+    menuFrame.Name = "MenuFrame";
+    menuFrame.Visible = openMenu;
+    menuFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40);
+    menuFrame.Position = UDim2.new(0.5, -225, 0, 0)
+    menuFrame.Size = UDim2.new(0, 450, 0, 285);
+	menuFrame.ZIndex = 0;
+	local minimizeButton = Instance.new("TextButton", grabFrame);
+    local UICorner4 = Instance.new("UICorner", minimizeButton);
+    UICorner4.CornerRadius = UDim.new(0.15, 0);
+    minimizeButton.Name = "MinimizeButton";
+    minimizeButton.TextColor3 = Color3.fromRGB(236, 98, 95);
+    minimizeButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+    minimizeButton.Position = UDim2.new(0, 385, 0, 3);
+    minimizeButton.Size = UDim2.new(0, 28, 0, 28);
+    minimizeButton.Text = "-";
+    minimizeButton.TextSize = 50;
+    minimizeButton.Font = "SourceSansBold";
+    minimizeButton.ZIndex = 3;
+    minimizeButton.BorderSizePixel = 0;
+    game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MinimizeButton.MouseButton1Click:Connect(function()
+        if minimizeMenu == true then
+            menuFrame.Visible = true;
+            minimizeButton.Text = "-";
+            minimizeMenu = false;
+            wait(1);
+        else
+			menuFrame.Visible = false;
+            minimizeButton.Text = "+";
+            minimizeMenu = true;
+        end
+    end);
+	-- Cheat Frames/Buttons --
+	local universalFrame = Instance.new("ScrollingFrame", menuFrame);
+		universalFrame.Name = "UniversalFrame";
+		universalFrame.Visible = true;
+		universalFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40);
+		universalFrame.Position = UDim2.new(0, 150, 0, 35)
+		universalFrame.Size = UDim2.new(0, 295, 0, 245);
+		universalFrame.ZIndex = 3;
+		universalFrame.BorderSizePixel = 0;
+	local flyButton = Instance.new("TextButton", universalFrame); -- Games Button
+		local UICorner4 = Instance.new("UICorner", flyButton); UICorner4.CornerRadius = UDim.new(0.2, 0);
+		flyButton.Name = "flyButton";
+		flyButton.Size = UDim2.new(0, 130, 0, 33);
+		flyButton.TextSize = 32;
+		flyButton.Position = UDim2.new(0, 10, 0, 40);
+		flyButton.Font = "SourceSansSemibold";
+		flyButton.Text = "Universal";
+		flyButton.TextColor3 = Color3.fromRGB(34, 199, 116);
+		flyButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	-- Cheat Frames/Buttons end--
+	-- SideButtons go here --
+	local sideButtons = Instance.new("Frame", menuFrame);
+		sideButtons.Name = "sideButtonsFrame";
+		sideButtons.Visible = openMenu;
+		sideButtons.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+		sideButtons.Position = UDim2.new(0.5, -225, 0, 0)
+		sideButtons.Size = UDim2.new(0, 150, 0, 285);
+		sideButtons.ZIndex = 1;
+		sideButtons.BorderSizePixel = 0;
+	local sideButton0 = Instance.new("TextButton", sideButtons); -- Games Button
+		local UICorner4 = Instance.new("UICorner", sideButton0); UICorner4.CornerRadius = UDim.new(0.2, 0);
+		sideButton0.Name = "sideButton0";
+		sideButton0.Size = UDim2.new(0, 130, 0, 33);
+		sideButton0.TextSize = 32;
+		sideButton0.Position = UDim2.new(0, 10, 0, 40);
+		sideButton0.Font = "SourceSansSemibold";
+		sideButton0.Text = "Universal";
+		sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
+		sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	local sideButton1 = Instance.new("TextButton", sideButtons); -- Games Button
+		local UICorner4 = Instance.new("UICorner", sideButton1); UICorner4.CornerRadius = UDim.new(0.2, 0);
+		sideButton1.Name = "sideButton1";
+		sideButton1.Size = UDim2.new(0, 130, 0, 33);
+		sideButton1.TextSize = 32;
+		sideButton1.Position = UDim2.new(0, 10, 0, 80);
+		sideButton1.Font = "SourceSansSemibold";
+		sideButton1.Text = "Games";
+		sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
+		sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	local sideButton2 = Instance.new("TextButton", sideButtons); -- About Button
+		local UICorner4 = Instance.new("UICorner", sideButton2); UICorner4.CornerRadius = UDim.new(0.2, 0);
+		sideButton2.Name = "sideButton2";
+		sideButton2.Size = UDim2.new(0, 130, 0, 33);
+		sideButton2.TextSize = 32;
+		sideButton2.Position = UDim2.new(0, 10, 0, 240);
+		sideButton2.Font = "SourceSansSemibold";
+		sideButton2.Text = "About";
+		sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
+		sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	local sideButton3 = Instance.new("TextButton", sideButtons); -- About Button
+		local UICorner4 = Instance.new("UICorner", sideButton3); UICorner4.CornerRadius = UDim.new(0.2, 0);
+		sideButton3.Name = "sideButton3";
+		sideButton3.Size = UDim2.new(0, 130, 0, 33);
+		sideButton3.TextSize = 32;
+		sideButton3.Position = UDim2.new(0, 10, 0, 120);
+		sideButton3.Font = "SourceSansSemibold";
+		sideButton3.Text = "Options";
+		sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
+		sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+
+	-- Button Functions
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.MouseButton1Click:Connect(function()
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			sideButton2.TextColor3 = Color3.fromRGB(255, 255, 255);
+			sideButton2.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+			universalFrame.Visible = true;
+		end);
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.MouseButton1Click:Connect(function()
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			sideButton0.TextColor3 = Color3.fromRGB(255, 255, 255);
+			sideButton0.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+		end);
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.MouseButton1Click:Connect(function()
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			sideButton1.TextColor3 = Color3.fromRGB(255, 255, 255);
+			sideButton1.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+		end);
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.MouseButton1Click:Connect(function()
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
+			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+			sideButton3.TextColor3 = Color3.fromRGB(255, 255, 255);
+			sideButton3.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+		end);
+	-- end of Button Functions --
+end
+
+RunWelcome();
