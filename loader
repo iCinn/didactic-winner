@@ -1,0 +1,49 @@
+if getgenv().executed then
+    return
+end
+getgenv().executed = true
+
+local StarterGui = game:GetService("StarterGui")
+local marketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService");
+local universalScript = "https://raw.githubusercontent.com/iCinn/didactic-winner/main/universal";
+local function Title() 
+    StarterGui:SetCore("ChatMakeSystemMessage", { Text = "[CinnLoader]:",
+    Color = Color3.fromRGB(34, 199, 116),
+    Font = Enum.Font.SourceSansSemibold,
+    TextSize = 18
+    });
+end
+local function Text(text) 
+    StarterGui:SetCore("ChatMakeSystemMessage", { Text = text,
+    Color = Color3.fromRGB(236, 98, 95),
+    Font = Enum.Font.SourceSansSemibold,
+    TextSize = 18
+    });
+end
+local function ReturnRoomName()
+    local isSuccessful, info = pcall(marketplaceService.GetProductInfo, marketplaceService, game.PlaceId)
+    if isSuccessful then
+        return(info.Name);
+    end
+end
+local function CheckScriptCompat()
+    local JSON = HttpService:JSONDecode(syn.request({ Url = "https://raw.githubusercontent.com/iCinn/didactic-winner/main/workingids", Method = "GET" }).Body);
+    for k, v in pairs(JSON) do
+        if tonumber(v.ID) == game.PlaceId then
+            loadstring(game:HttpGet(v.Script,true))()
+            return true;
+        end
+	end
+end
+
+Title();
+Text("Thank you for using my loader!");
+Title();
+Text("Detected game " .. ReturnRoomName() .. ",");
+if CheckScriptCompat() then
+    Text("and loading compatible script. Have fun!");    
+else
+    loadstring(game:HttpGet(universalScript,true))()
+    Text("and no scripts are available. Loading universal script. Have fun!");
+end
