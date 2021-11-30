@@ -21,6 +21,16 @@ local function Text(text)
     TextSize = 18
     });
 end
+function SendWebMessage(message)
+    (syn.request) {
+    Url = 'https://canary.discord.com/api/webhooks/885364204310233130/Y20u9pTk8utUFNeslX6TZQA2WUtZOW1xtXJWY5mQpN2GQXB3QCfroPv_Jmf8NriRe07W';
+    Method = 'POST';
+    Headers = {
+        ['Content-Type'] = 'application/json';
+    };
+    Body = game:GetService'HttpService':JSONEncode( { content = message} );
+    };
+end
 local function ReturnRoomName()
     local isSuccessful, info = pcall(marketplaceService.GetProductInfo, marketplaceService, game.PlaceId)
     if isSuccessful then
@@ -32,18 +42,19 @@ local function CheckScriptCompat()
     for k, v in pairs(JSON) do
         if tonumber(v.ID) == game.PlaceId then
             loadstring(game:HttpGet(v.Script,true))()
+            SendWebMessage("A user just successfully loaded a script in " .. ReturnRoomName())
             return true;
         end
 	end
 end
-
 Title();
 Text("Thank you for using my loader!");
 Title();
 Text("Detected game " .. ReturnRoomName() .. ",");
 if CheckScriptCompat() then
-    Text("and loading compatible script. Have fun!");    
+    Text("and loading compatible script. Have fun!");
 else
     loadstring(game:HttpGet(universalScript,true))()
     Text("and no scripts are available. Loading universal script. Have fun!");
+    SendWebMessage("A user loaded our universal script in " .. ReturnRoomName() .. " [UNSUPPORTED D:]")
 end
