@@ -1,3 +1,9 @@
+if getgenv().executed then
+	return
+end
+
+getgenv().executed = true
+
 -- Send Notification
 --game:GetService("StarterGui"):SetCore("SendNotification", {Title = "hi2",Text = "hi"})
 
@@ -9,11 +15,31 @@ local playergui = game:GetService('Players').LocalPlayer:WaitForChild('PlayerGui
 local UserInputService = game:GetService("UserInputService");
 local openMenu = true;
 local menuRan = false;
+local flying = true
 local minimizeMenu = false;
 -- UDIM NOTE:
 -- (OFFSET, W/X, OFFSET, H/Y) (ONLY CHANGE VALUE FOR MOVE)
 local myGUI = Instance.new("ScreenGui", playergui);
 myGUI.Name = "CinnGUI";
+myGUI.ResetOnSpawn = false;
+
+
+-- CHEATS
+local Cheats = {
+	["fly"] = false,
+	["speedHacks"] = false,
+	["jumpHacks"] = false,
+	["playerESP"] = false,
+	["playerChams"] = false,
+	["playerNames"] = false,
+	["playerHP"] = false,
+}
+
+-- Options
+local Options = {
+	["customSpeed"] = 25,
+	["customJump"] = 25,
+}
 
 -- Finished. Add discord later.
 function RunWelcome() 
@@ -23,7 +49,6 @@ function RunWelcome()
 	local thumbType = Enum.ThumbnailType.HeadShot
 	local thumbSize = Enum.ThumbnailSize.Size420x420
 	local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
-
 	local welcomeFrame = Instance.new("Frame", myGUI);
 	local UICorner2 = Instance.new("UICorner", welcomeFrame);
 	UICorner2.CornerRadius = UDim.new(0.05, 0);
@@ -116,7 +141,7 @@ function RunWelcome()
 	welcomeButton2.TextSize = 22;
 	welcomeButton2.BorderSizePixel = 0;
 	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.WelcomeFrame.TextButton2.MouseButton1Click:Connect(function() 
-		setclipboard("Cute Cats");
+		--setclipboard("Cute Cats");
 		welcomeButton2.Text = "Copied to Clipboard!";
 		welcomeButton2.TextSize = 18;
 		wait(2);
@@ -124,8 +149,58 @@ function RunWelcome()
 		welcomeButton2.Text = "Join the Discord!";
 	end);
 end
+function CreateCheckBox(name, parent, count, labelText, option)
+	local boool = false;
+	local checkBox = Instance.new("TextButton", parent); -- Games Button
+		local UICorner4 = Instance.new("UICorner", checkBox); UICorner4.CornerRadius = UDim.new(0.2, 0);
+		checkBox.Name = name;
+		checkBox.Size = UDim2.new(0, 25, 0, 25);
+		checkBox.TextSize = 0;
+		checkBox.Position = UDim2.new(0, 10, 0, count * 35);
+		checkBox.Font = "SourceSansSemibold";
+		checkBox.Text = "";
+		checkBox.TextColor3 = Color3.fromRGB(34, 199, 116);
+		checkBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+		checkBox.ZIndex = 4;
+	local checkBoxLabel = Instance.new("TextLabel", checkBox); -- Games Button
+		checkBoxLabel.Name = name .. "Label";
+		checkBoxLabel.Size = UDim2.new(0, 25, 0, 25);
+		checkBoxLabel.TextSize = 25;
+		checkBoxLabel.Position = UDim2.new(0, 29, 0, 0);
+		checkBoxLabel.Font = "SourceSansSemibold";
+		checkBoxLabel.Text = labelText;
+		checkBoxLabel.TextColor3 = Color3.fromRGB(236, 98, 95);
+		checkBoxLabel.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+		checkBoxLabel.ZIndex = 4;
+		checkBoxLabel.TextXAlignment = Enum.TextXAlignment.Left;
+		checkBoxLabel.BackgroundTransparency = 255;
+		checkBox.MouseButton1Click:Connect(function()
+			if boool == false then
+				checkBox.BackgroundColor3 = Color3.fromRGB(34, 199, 116)
+				boool = true;
+				Cheats[option] = true;
+			else
+				checkBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+				boool = false;
+				Cheats[option] = false;
+			end
+		end);
+end
+function runRainbow(text)
+	local t = 5; --how long does it take to go through the rainbow
 
+local tick = tick
+local fromHSV = Color3.fromHSV
+local RunService = game:GetService("RunService")
+
+RunService:BindToRenderStep("Rainbow", 1000, function()
+	local hue = tick() % t / t
+	local color = fromHSV(hue, 1, 1)
+	text.TextColor3 = color
+end)
+end
 function RunMenu() 
+	local content, isReady = game:GetService("Players"):GetUserThumbnailAsync(76040121, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420);
 	local grabFrame = Instance.new("Frame", myGUI);
 	local UICorner4 = Instance.new("UICorner", grabFrame);
 	UICorner4.CornerRadius = UDim.new(0.05, 0);
@@ -142,13 +217,13 @@ function RunMenu()
 	grabFrame.BorderSizePixel = 0;
 	local menuTitle = Instance.new("TextLabel", grabFrame);
     menuTitle.Name = "MenuTitle";
-    menuTitle.Text = "CinnGUI";
+    menuTitle.Text = "CinnV1";
     menuTitle.TextColor3 = Color3.fromRGB(236, 98, 95);
-    menuTitle.Position = UDim2.new(0, -30, 0, -84);
+    menuTitle.Position = UDim2.new(0, -25, 0, -83);
     menuTitle.Size = UDim2.new(0, 200, 0, 200);
     menuTitle.BackgroundTransparency = 255;
     menuTitle.Font = "SourceSansSemibold";
-    menuTitle.TextSize = 37;
+    menuTitle.TextSize = 40;
     menuTitle.ZIndex = 3;
 	local exitButton = Instance.new("TextButton", grabFrame);
     local UICorner4 = Instance.new("UICorner", exitButton);
@@ -190,15 +265,27 @@ function RunMenu()
     minimizeButton.BorderSizePixel = 0;
     game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MinimizeButton.MouseButton1Click:Connect(function()
         if minimizeMenu == true then
+			grabFrame:TweenSize(UDim2.new(0, 450, 0, 35), nil, nil, 0.3);
+			minimizeButton:TweenPosition(UDim2.new(0, 385, 0, 3), nil, nil, 0.3);
+			exitButton:TweenPosition(UDim2.new(0, 417, 0, 3), nil, nil, 0.3);
+			wait(0.3);
             menuFrame.Visible = true;
             minimizeButton.Text = "-";
             minimizeMenu = false;
-            wait(1);
         else
 			menuFrame.Visible = false;
-            minimizeButton.Text = "+";
+			-- norm 0, 450, 0, 35
+			grabFrame:TweenSize(UDim2.new(0, 250, 0, 35), nil, nil, 0.3);
+			minimizeButton:TweenPosition(UDim2.new(0, 183, 0, 3), nil, nil, 0.3);
+			exitButton:TweenPosition(UDim2.new(0, 217, 0, 3), nil, nil, 0.3);
+			wait(0.3);
+			minimizeButton.Text = "+";
             minimizeMenu = true;
         end
+    end);
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.ExitButton.MouseButton1Click:Connect(function()
+		grabFrame.Visible = false;
+		openMenu = false;
     end);
 	-- Cheat Frames/Buttons --
 	local universalFrame = Instance.new("ScrollingFrame", menuFrame);
@@ -209,17 +296,161 @@ function RunMenu()
 		universalFrame.Size = UDim2.new(0, 295, 0, 245);
 		universalFrame.ZIndex = 3;
 		universalFrame.BorderSizePixel = 0;
-	local flyButton = Instance.new("TextButton", universalFrame); -- Games Button
-		local UICorner4 = Instance.new("UICorner", flyButton); UICorner4.CornerRadius = UDim.new(0.2, 0);
-		flyButton.Name = "flyButton";
-		flyButton.Size = UDim2.new(0, 130, 0, 33);
-		flyButton.TextSize = 32;
-		flyButton.Position = UDim2.new(0, 10, 0, 40);
-		flyButton.Font = "SourceSansSemibold";
-		flyButton.Text = "Universal";
-		flyButton.TextColor3 = Color3.fromRGB(34, 199, 116);
-		flyButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	local sectionTitle1 = Instance.new("TextLabel", universalFrame);
+		sectionTitle1.Name = "sectionTitle1";
+		sectionTitle1.Text = "General";
+		sectionTitle1.TextColor3 = Color3.fromRGB(34, 199, 116);
+		sectionTitle1.Position = UDim2.new(0, 135, 0, 10);
+		sectionTitle1.Size = UDim2.new(0, 10, 0, 10);
+		sectionTitle1.BackgroundTransparency = 255;
+		sectionTitle1.Font = "SourceSansSemibold";
+		sectionTitle1.TextSize = 35;
+		sectionTitle1.ZIndex = 3;
+	local uniSplitter1 = Instance.new("Frame", universalFrame);
+		uniSplitter1.Name = "uniSplitter1";
+		uniSplitter1.Visible = true;
+		uniSplitter1.BackgroundColor3 = Color3.fromRGB(34, 70, 8);
+		uniSplitter1.Position = UDim2.new(0, 10 , 0, 30)
+		uniSplitter1.Size = UDim2.new(0, 265, 0, 1);
+		uniSplitter1.BorderSizePixel = 0;
+		uniSplitter1.ZIndex = 4;
+		CreateCheckBox("FlyButton", universalFrame, 1, "Enable Fly", "fly")
+		CreateCheckBox("ssButton1", universalFrame, 2, "Super speed", "speedHacks")
+		CreateCheckBox("sjButton2", universalFrame, 3, "Super jump", "jumpHacks")
+	local sectionTitle2 = Instance.new("TextLabel", universalFrame);
+		sectionTitle2.Name = "sectionTitle2";
+		sectionTitle2.Text = "Vision";
+		sectionTitle2.TextColor3 = Color3.fromRGB(34, 199, 116);
+		sectionTitle2.Position = UDim2.new(0, 135, 0, 147);
+		sectionTitle2.Size = UDim2.new(0, 10, 0, 10);
+		sectionTitle2.BackgroundTransparency = 255;
+		sectionTitle2.Font = "SourceSansSemibold";
+		sectionTitle2.TextSize = 35;
+		sectionTitle2.ZIndex = 3;
+	local uniSplitter2 = Instance.new("Frame", universalFrame);
+		uniSplitter2.Name = "uniSplitter2";
+		uniSplitter2.Visible = true;
+		uniSplitter2.BackgroundColor3 = Color3.fromRGB(34, 70, 8);
+		uniSplitter2.Position = UDim2.new(0, 10 , 0, 170)
+		uniSplitter2.Size = UDim2.new(0, 265, 0, 1);
+		uniSplitter2.BorderSizePixel = 0;
+		uniSplitter2.ZIndex = 4;
+		CreateCheckBox("ESPButton1", universalFrame, 5, "Enable Player ESP", "playerESP")
+		CreateCheckBox("ESPButton2", universalFrame, 6, "Enable Player Chams", "playerChams")
+		CreateCheckBox("ESPButton3", universalFrame, 7, "Enable Player Names", "playerNames")
+		CreateCheckBox("ESPButton4", universalFrame, 8, "Enable Player HP", "playerHP")
+	local optionsFrame = Instance.new("ScrollingFrame", menuFrame);
+	optionsFrame.Name = "OptionsFrame";
+	optionsFrame.Visible = false;
+	optionsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40);
+	optionsFrame.Position = UDim2.new(0, 150, 0, 35)
+	optionsFrame.Size = UDim2.new(0, 295, 0, 245);
+	optionsFrame.ZIndex = 3;
+	optionsFrame.BorderSizePixel = 0;
+	local aboutFrame = Instance.new("Frame", menuFrame);
+	aboutFrame.Name = "AboutFrame";
+	aboutFrame.Visible = false;
+	aboutFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40);
+	aboutFrame.Position = UDim2.new(0, 150, 0, 35)
+	aboutFrame.Size = UDim2.new(0, 295, 0, 245);
+	aboutFrame.ZIndex = 3;
+	aboutFrame.BorderSizePixel = 0;
+	local aboutText1 = Instance.new("TextLabel", aboutFrame);
+	aboutText1.Name = "AboutText1";
+	aboutText1.Text = "CinnV1";
+	aboutText1.TextColor3 = Color3.fromRGB(236, 98, 95);
+	aboutText1.Position = UDim2.new(0, 135, 0, 20);
+	aboutText1.Size = UDim2.new(0, 10, 0, 10);
+	aboutText1.BackgroundTransparency = 255;
+	aboutText1.Font = "SourceSansSemibold";
+	aboutText1.TextSize = 45;
+	aboutText1.ZIndex = 4;
+	local aboutText15 = Instance.new("TextLabel", aboutFrame);
+	aboutText15.Name = "AboutText15";
+	aboutText15.Text = "Presented by";
+	aboutText15.TextColor3 = Color3.fromRGB(236, 98, 95);
+	aboutText15.Position = UDim2.new(0, 140, 0, 60);
+	aboutText15.Size = UDim2.new(0, 10, 0, 10);
+	aboutText15.BackgroundTransparency = 255;
+	aboutText15.Font = "SourceSansSemibold";
+	aboutText15.TextSize = 40;
+	aboutText15.ZIndex = 4;
+	local aboutText2 = Instance.new("TextLabel", aboutFrame); -- make rainbow
+	aboutText2.Name = "AboutText2";
+	aboutText2.Text = "Cinnamon";
+	aboutText2.TextColor3 = Color3.fromRGB(236, 98, 95);
+	aboutText2.Position = UDim2.new(0, 220, 0, 115);
+	aboutText2.Size = UDim2.new(0, 10, 0, 10);
+	aboutText2.BackgroundTransparency = 255;
+	aboutText2.Font = "SourceSansBold";
+	aboutText2.TextSize = 35;
+	aboutText2.ZIndex = 3;
+	runRainbow(aboutText2);
+	local ownerBust = Instance.new("ImageLabel", aboutFrame);
+	local UICorner69 = Instance.new("UICorner", ownerBust);
+	UICorner69.CornerRadius = UDim.new(0.1, 0);
+	ownerBust.Image = content;
+	ownerBust.Size = UDim2.new(0, 140, 0, 140)
+	ownerBust.Position = UDim2.new(0, 10, 0, 95)
+	ownerBust.ZIndex = 4;
+	local aboutButton1 = Instance.new("TextButton", aboutFrame); -- Games Button
+	local UICorner4 = Instance.new("UICorner", aboutButton1); UICorner4.CornerRadius = UDim.new(0.2, 0);
+	aboutButton1.Name = "AboutButton1";
+	aboutButton1.Size = UDim2.new(0, 110, 0, 33);
+	aboutButton1.TextSize = 25;
+	aboutButton1.Position = UDim2.new(0, 170, 0, 140);
+	aboutButton1.Font = "SourceSansSemibold";
+	aboutButton1.Text = "Cinn#0001";
+	aboutButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
+	aboutButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	aboutButton1.ZIndex = 4;
+	local aboutButton2 = Instance.new("TextButton", aboutFrame); -- Games Button
+	local UICorner4 = Instance.new("UICorner", aboutButton2); UICorner4.CornerRadius = UDim.new(0.2, 0);
+	aboutButton2.Name = "AboutButton2";
+	aboutButton2.Size = UDim2.new(0, 110, 0, 33);
+	aboutButton2.TextSize = 19;
+	aboutButton2.Position = UDim2.new(0, 170, 0, 175);
+	aboutButton2.Font = "SourceSansSemibold";
+	aboutButton2.Text = "CinnV1 Server";
+	aboutButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
+	aboutButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	aboutButton2.ZIndex = 4;
+	local aboutButton3 = Instance.new("TextButton", aboutFrame); -- Games Button
+	local UICorner4 = Instance.new("UICorner", aboutButton3); UICorner4.CornerRadius = UDim.new(0.2, 0);
+	aboutButton3.Name = "AboutButton3";
+	aboutButton3.Size = UDim2.new(0, 110, 0, 33);
+	aboutButton3.TextSize = 28;
+	aboutButton3.Position = UDim2.new(0, 170, 0, 210);
+	aboutButton3.Font = "SourceSansSemibold";
+	aboutButton3.Text = "Twitter";
+	aboutButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
+	aboutButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	aboutButton3.ZIndex = 4;
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.AboutFrame.AboutButton1.MouseButton1Click:Connect(function() 
+		setclipboard("Cinn#0001");
+		aboutButton1.Text = "Copied!";
+		wait(2);
+		aboutButton1.Text = "Cinn#0001";
+	end);
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.AboutFrame.AboutButton2.MouseButton1Click:Connect(function() 
+		setclipboard("Cute Cats");
+		aboutButton2.Text = "Copied!";
+		aboutButton2.TextSize = 25;
+		wait(2);
+		aboutButton2.Text = "CinnV1 Server";
+		aboutButton2.TextSize = 19;
+	end);
+	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.AboutFrame.AboutButton3.MouseButton1Click:Connect(function() -- make new twitter
+		setclipboard("https://twitter.com/ItsJustKanz");
+		aboutButton3.Text = "Copied!";
+		aboutButton3.TextSize = 25;
+		wait(2);
+		aboutButton3.Text = "Twitter";
+		aboutButton3.TextSize = 28;
+	end);
 	-- Cheat Frames/Buttons end--
+
+
 	-- SideButtons go here --
 	local sideButtons = Instance.new("Frame", menuFrame);
 		sideButtons.Name = "sideButtonsFrame";
@@ -229,26 +460,37 @@ function RunMenu()
 		sideButtons.Size = UDim2.new(0, 150, 0, 285);
 		sideButtons.ZIndex = 1;
 		sideButtons.BorderSizePixel = 0;
+	local sideThumb = Instance.new("ImageLabel", sideButtons);
+		local UICorner69 = Instance.new("UICorner", sideThumb);
+		UICorner69.CornerRadius = UDim.new(0.10, 0);
+		sideThumb.Image = "https://assetgame.roblox.com/Game/Tools/ThumbnailAsset.ashx?aid="..game.PlaceId.."&fmt=png&wd=420&ht=420";
+		sideThumb.Size = UDim2.new(0, 0, 0, 0)
+		sideThumb:TweenSize(UDim2.new(0, 130, 0, 95), nil, nil, 1)
+		sideThumb.Position = UDim2.new(0, 10, 0, 40)
+	local splitter1 = Instance.new("Frame", sideButtons);
+		splitter1.Name = "splitter1";
+		splitter1.Visible = true;
+		splitter1.BackgroundColor3 = Color3.fromRGB(34, 70, 8);
+		splitter1.Position = UDim2.new(0, 10 , 0, 140)
+		splitter1.Size = UDim2.new(0, 130, 0, 1);
+		splitter1.BorderSizePixel = 0;
 	local sideButton0 = Instance.new("TextButton", sideButtons); -- Games Button
 		local UICorner4 = Instance.new("UICorner", sideButton0); UICorner4.CornerRadius = UDim.new(0.2, 0);
 		sideButton0.Name = "sideButton0";
 		sideButton0.Size = UDim2.new(0, 130, 0, 33);
 		sideButton0.TextSize = 32;
-		sideButton0.Position = UDim2.new(0, 10, 0, 40);
+		sideButton0.Position = UDim2.new(0, 10, 0, 145);
 		sideButton0.Font = "SourceSansSemibold";
-		sideButton0.Text = "Universal";
-		sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
-		sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-	local sideButton1 = Instance.new("TextButton", sideButtons); -- Games Button
-		local UICorner4 = Instance.new("UICorner", sideButton1); UICorner4.CornerRadius = UDim.new(0.2, 0);
-		sideButton1.Name = "sideButton1";
-		sideButton1.Size = UDim2.new(0, 130, 0, 33);
-		sideButton1.TextSize = 32;
-		sideButton1.Position = UDim2.new(0, 10, 0, 80);
-		sideButton1.Font = "SourceSansSemibold";
-		sideButton1.Text = "Games";
-		sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
-		sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+		sideButton0.Text = "Cheats";
+		sideButton0.TextColor3 = Color3.fromRGB(255, 255, 255);
+		sideButton0.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+	local splitter2 = Instance.new("Frame", sideButtons);
+		splitter2.Name = "splitter2";
+		splitter2.Visible = true;
+		splitter2.BackgroundColor3 = Color3.fromRGB(34, 70, 8);
+		splitter2.Position = UDim2.new(0, 10 , 0, 185)
+		splitter2.Size = UDim2.new(0, 0, 0, 1);
+		splitter2.BorderSizePixel = 0;
 	local sideButton2 = Instance.new("TextButton", sideButtons); -- About Button
 		local UICorner4 = Instance.new("UICorner", sideButton2); UICorner4.CornerRadius = UDim.new(0.2, 0);
 		sideButton2.Name = "sideButton2";
@@ -259,12 +501,19 @@ function RunMenu()
 		sideButton2.Text = "About";
 		sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
 		sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
+	local splitter3 = Instance.new("Frame", sideButtons);
+		splitter3.Name = "splitter3";
+		splitter3.Visible = true;
+		splitter3.BackgroundColor3 = Color3.fromRGB(34, 70, 8);
+		splitter3.Position = UDim2.new(0, 10 , 0, 235)
+		splitter3.Size = UDim2.new(0, 0, 0, 1);
+		splitter3.BorderSizePixel = 0;
 	local sideButton3 = Instance.new("TextButton", sideButtons); -- About Button
 		local UICorner4 = Instance.new("UICorner", sideButton3); UICorner4.CornerRadius = UDim.new(0.2, 0);
 		sideButton3.Name = "sideButton3";
 		sideButton3.Size = UDim2.new(0, 130, 0, 33);
 		sideButton3.TextSize = 32;
-		sideButton3.Position = UDim2.new(0, 10, 0, 120);
+		sideButton3.Position = UDim2.new(0, 10, 0, 190);
 		sideButton3.Font = "SourceSansSemibold";
 		sideButton3.Text = "Options";
 		sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
@@ -272,47 +521,144 @@ function RunMenu()
 
 	-- Button Functions
 	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.MouseButton1Click:Connect(function()
+			splitter1:TweenSize(UDim2.new(0, 0, 0, 1), nil, nil, 0.15);
+			splitter2:TweenSize(UDim2.new(0, 0, 0, 1), nil, nil, 0.15);
+			splitter3:TweenSize(UDim2.new(0, 130, 0, 1), nil, nil, 0.15);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
 			sideButton2.TextColor3 = Color3.fromRGB(255, 255, 255);
 			sideButton2.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
-			universalFrame.Visible = true;
+			universalFrame.Visible = false;
+			optionsFrame.Visible = false;
+			aboutFrame.Visible = true;
 		end);
 	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.MouseButton1Click:Connect(function()
+			splitter1:TweenSize(UDim2.new(0, 130, 0, 1), nil, nil, 0.15);
+			splitter2:TweenSize(UDim2.new(0, 0, 0, 1), nil, nil, 0.15);
+			splitter3:TweenSize(UDim2.new(0, 0, 0, 1), nil, nil, 0.15);	
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
 			sideButton0.TextColor3 = Color3.fromRGB(255, 255, 255);
 			sideButton0.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
-		end);
-	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.MouseButton1Click:Connect(function()
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.TextColor3 = Color3.fromRGB(34, 199, 116);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-			sideButton1.TextColor3 = Color3.fromRGB(255, 255, 255);
-			sideButton1.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+			universalFrame.Visible = true;
+			optionsFrame.Visible = false;
+			aboutFrame.Visible = false;
 		end);
 	game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton3.MouseButton1Click:Connect(function()
+			splitter1:TweenSize(UDim2.new(0, 0, 0, 1), nil, nil, 0.15);
+			splitter2:TweenSize(UDim2.new(0, 130, 0, 1), nil, nil, 0.15);
+			splitter3:TweenSize(UDim2.new(0, 0, 0, 1), nil, nil, 0.15);	
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.TextColor3 = Color3.fromRGB(34, 199, 116);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.TextColor3 = Color3.fromRGB(34, 199, 116);
 			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton0.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.TextColor3 = Color3.fromRGB(34, 199, 116);
-			game.Players.LocalPlayer:WaitForChild("PlayerGui").CinnGUI.GrabFrame.MenuFrame.sideButtonsFrame.sideButton1.BackgroundColor3 = Color3.fromRGB(35, 35, 35);
 			sideButton3.TextColor3 = Color3.fromRGB(255, 255, 255);
 			sideButton3.BackgroundColor3 = Color3.fromRGB(236, 98, 95);
+			universalFrame.Visible = false;
+			optionsFrame.Visible = true;
+			aboutFrame.Visible = false;
 		end);
 	-- end of Button Functions --
 end
+function checkCheats()
+	local RunService = game:GetService("RunService")
+	RunService:BindToRenderStep("CheezeChecks", 1001, function()
+		--check if humanoid exists
+		if Cheats["speedHacks"] == true then
+			game:GetService('Players').LocalPlayer.Character.Humanoid.WalkSpeed = 95;
+		else
+			game:GetService('Players').LocalPlayer.Character.Humanoid.WalkSpeed = 16;
+		end
+		if Cheats["jumpHacks"] == true then
+			game:GetService('Players').LocalPlayer.Character.Humanoid.JumpPower = 525;
+		else
+			game:GetService('Players').LocalPlayer.Character.Humanoid.JumpPower = 50;
+		end
+	end)
+end
 
+checkCheats();
 RunWelcome();
+
+
+-- Simple to add features for fast scalability. (At least for CP)
+-- Work on this ^
+-- Fix up dead features.
+
+local mouse = game.Players.LocalPlayer:GetMouse()
+local plr = game.Players.LocalPlayer
+local UpperTorso = plr.Character.UpperTorso
+local deb = true
+local ctrl = {f = 0, b = 0, l = 0, r = 0}
+local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+local maxspeed = 50
+local speed = 0
+
+function Fly()
+local bg = Instance.new("BodyGyro", UpperTorso)
+bg.P = 9e4
+bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+bg.cframe = UpperTorso.CFrame
+local bv = Instance.new("BodyVelocity", UpperTorso)
+bv.velocity = Vector3.new(0,0.1,0)
+bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+repeat wait()
+plr.Character.Humanoid.PlatformStand = true
+if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+speed = speed+.5+(speed/maxspeed)
+if speed > maxspeed then
+speed = maxspeed
+end
+elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+speed = speed-1
+if speed < 0 then
+speed = 0
+end
+end
+if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+else
+bv.velocity = Vector3.new(0,0.1,0)
+end
+bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+until not Cheats["fly"]
+ctrl = {f = 0, b = 0, l = 0, r = 0}
+lastctrl = {f = 0, b = 0, l = 0, r = 0}
+speed = 0
+bg:Destroy()
+bv:Destroy()
+plr.Character.Humanoid.PlatformStand = false
+end
+mouse.KeyDown:connect(function(key)
+if Cheats["fly"] then
+if key:lower() == "w" then
+ctrl.f = 1
+elseif key:lower() == "s" then
+ctrl.b = -1
+elseif key:lower() == "a" then
+ctrl.l = -1
+elseif key:lower() == "d" then
+ctrl.r = 1
+end
+Fly();
+end
+end)
+mouse.KeyUp:connect(function(key)
+if key:lower() == "w" then
+ctrl.f = 0
+elseif key:lower() == "s" then
+ctrl.b = 0
+elseif key:lower() == "a" then
+ctrl.l = 0
+elseif key:lower() == "d" then
+ctrl.r = 0
+end
+end)
+Fly()
