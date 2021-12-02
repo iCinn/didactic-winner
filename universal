@@ -19,7 +19,7 @@ local flying = true
 local minimizeMenu = false;
 -- UDIM NOTE:
 -- (OFFSET, W/X, OFFSET, H/Y) (ONLY CHANGE VALUE FOR MOVE)
-local myGUI = Instance.new("ScreenGui", playergui);
+local myGUI = Instance.new("ScreenGui");
 myGUI.Name = "CinnGUI";
 myGUI.ResetOnSpawn = false;
 
