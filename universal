@@ -593,7 +593,7 @@ local maxspeed = 50
 local speed = 0
 
 function Fly()
-if plr.Character.Torso == nil then
+if not plr:FindFirstChild("Torso") then
 	TorsoPart = plr.Character.UpperTorso;
 else
 	TorsoPart = plr.Character.Torso;
