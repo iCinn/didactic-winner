@@ -585,7 +585,12 @@ RunWelcome();
 
 local mouse = game.Players.LocalPlayer:GetMouse()
 local plr = game.Players.LocalPlayer
-local TorsoPart = nil;
+local UpperTorso = plr.Character;
+if not plr.Character:FindFirstChild("Torso") then
+	UpperTorso = plr.Character.UpperTorso;
+else
+	UpperTorso = plr.Character.Torso;
+ end
 local deb = true
 local ctrl = {f = 0, b = 0, l = 0, r = 0}
 local lastctrl = {f = 0, b = 0, l = 0, r = 0}
@@ -593,16 +598,11 @@ local maxspeed = 50
 local speed = 0
 
 function Fly()
-if not plr:FindFirstChild("Torso") then
-	TorsoPart = plr.Character.UpperTorso;
-else
-	TorsoPart = plr.Character.Torso;
-end
-local bg = Instance.new("BodyGyro", TorsoPart)
+local bg = Instance.new("BodyGyro", UpperTorso)
 bg.P = 9e4
 bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-bg.cframe = TorsoPart.CFrame
-local bv = Instance.new("BodyVelocity", TorsoPart)
+bg.cframe = UpperTorso.CFrame
+local bv = Instance.new("BodyVelocity", UpperTorso)
 bv.velocity = Vector3.new(0,0.1,0)
 bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
 repeat wait()
